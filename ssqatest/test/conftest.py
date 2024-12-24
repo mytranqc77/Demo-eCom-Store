@@ -11,7 +11,7 @@ def init_driver(request):
     # os.environ['BROWSER'] = 'chrome'
     supported_browsers = ['chrome', 'ch', 'headlesschrome', 'firefox', 'ff', 'headlessfirefox']
 
-    browser = os.environ.get('BROWSER', None)
+    browser = os.environ.get('BROWSER', 'chrome')
     if not browser:
         raise Exception("The environment variable 'BROWSER' must be set")
 
