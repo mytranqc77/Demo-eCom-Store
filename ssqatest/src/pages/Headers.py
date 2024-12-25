@@ -4,7 +4,7 @@ from ssqatest.src.SeleniumExtended import SeleniumExtended
 from ssqatest.src.pages.locators.HeaderLocators import HeaderLocators
 
 
-class Headers:
+class Headers(HeaderLocators):
 
     def __init__(self, driver):
         self.driver = driver
@@ -14,7 +14,7 @@ class Headers:
         self.selenium.wait_and_click(self.cart)
 
     def check_item(self, count):
-        self.expected_item_count = str(count) + 'item'
+        self.expected_item_count = str(count) + ' item'
         self.selenium.wait_until_element_contains_text(self.item_count, self.expected_item_count)
 
 

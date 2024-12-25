@@ -17,3 +17,4 @@ class TestEndToEndCheckoutGuestUser:
         # Check product is added to basket or not
         header.check_item(1)
         header.click_on_cart_on_header()
+
