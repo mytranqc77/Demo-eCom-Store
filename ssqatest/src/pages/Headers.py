@@ -11,9 +11,9 @@ class Headers(HeaderLocators):
         self.selenium = SeleniumExtended(self.driver)
 
     def click_on_cart_on_header(self):
-        self.selenium.wait_and_click(self.cart)
+        self.selenium.wait_and_click(self.cart_on_the_right_side)
 
-    def check_item(self, count):
+    def wait_until_cart_item_count(self, count):
         self.expected_item_count = str(count) + ' item'
         self.selenium.wait_until_element_contains_text(self.item_count, self.expected_item_count)
 
