@@ -7,4 +7,3 @@ def get_base_url():
 
     if env.lower() == 'test':
         return 'http://demostore.supersqa.com'
-

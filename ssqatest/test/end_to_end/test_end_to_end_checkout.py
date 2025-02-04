@@ -4,6 +4,11 @@ import pytest
 from ssqatest.src.pages.HomePage import HomePage
 from ssqatest.src.pages.Headers import Headers
 from ssqatest.src.pages.CartPage import CartPage
+from ssqatest.src.configs.generic_configs import GenericConfigs
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
+import logging as logger
 
 
 @pytest.mark.usefixtures("init_driver")
@@ -23,6 +28,12 @@ class TestEndToEndCheckoutGuestUser:
         # Verify the number of products
         product_names = cart_page.get_products_in_cart()
         assert len(product_names) == 1, f"Expected 1 item in cart but found {len(product_names)}"
+
+        # apply free coupon
+        coupon_code = GenericConfigs.free_coupon
+        cart_page.apply_coupon(coupon_code)
+
+
 
 
 

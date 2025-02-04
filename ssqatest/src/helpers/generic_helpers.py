@@ -25,3 +25,5 @@ def generate_random_email_and_password(domain=None, email_prefix=None):
 if __name__ == "__main__":
     logger.basicConfig(level=logger.DEBUG)
     print(generate_random_email_and_password())
+
+
