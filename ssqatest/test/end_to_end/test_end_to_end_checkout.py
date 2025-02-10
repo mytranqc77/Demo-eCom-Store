@@ -33,6 +33,10 @@ class TestEndToEndCheckoutGuestUser:
         coupon_code = GenericConfigs.free_coupon
         cart_page.apply_coupon(coupon_code)
 
+        # click check out button
+        cart_page.click_checkout_button()
+
+
 
 
 

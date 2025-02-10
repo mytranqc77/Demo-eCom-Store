@@ -1,9 +1,16 @@
+import logging
+import time
+
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import StaleElementReferenceException
 from ssqatest.src.pages.locators.MyAccountSignedOutLocator import MyAccountSignedOutLocator
-import logging as logger
+import logging
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__) # Get the logger after configuration
 
 
 class SeleniumExtended:
@@ -18,12 +25,39 @@ class SeleniumExtended:
             EC.visibility_of_element_located(locator)
         ).send_keys(text)
 
-    def wait_and_click(self, locator, timeout=None):
-        timeout = timeout if timeout else self.default_timeout
+    # def wait_and_click(self, locator, timeout=None):
+    #     timeout = timeout if timeout else self.default_timeout
+    #     try:
+    #         WebDriverWait(self.driver, self.default_timeout).until(
+    #             EC.visibility_of_element_located(locator)
+    #         ).click()
+    #     except StaleElementReferenceException:
+    #         time.sleep(2)
+    #         WebDriverWait(self.driver, self.default_timeout).until(
+    #             EC.visibility_of_element_located(locator)
+    #         ).click()
 
-        WebDriverWait(self.driver, self.default_timeout).until(
-            EC.visibility_of_element_located(locator)
-        ).click()
+    def wait_and_click(self, locator, timeout=None, retries=3):
+        timeout = timeout if timeout else self.default_timeout
+        for attempt in range(retries):
+            try:
+                WebDriverWait(self.driver, timeout).until(
+                    EC.element_to_be_clickable(locator)
+                ).click()
+                return True
+            except StaleElementReferenceException:
+                logger.warning(f'StaleElementReferenceException, retrying ({attempt + 1} / {retries})')
+                time.sleep(1)
+                # print(f'StaleElementReferenceException, retrying ({attempt + 1} / {retries})')
+                continue
+            except TimeoutException:
+                logger.error(f"Timeout: unable to click element {locator} within timeout seconds")
+                if attempt == retries - 1:
+                    raise
+            except Exception as e:
+                logger.error(f"An unexpected error occured: {e}")
+                raise
+        raise TimeoutException(f"Element not clickable after {retries} retries")
 
     def wait_until_element_contains_text(self, locator, text, timeout=None):
         timeout = timeout if timeout else self.default_timeout

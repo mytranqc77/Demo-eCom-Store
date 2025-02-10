@@ -20,6 +20,10 @@ class CartPage(CartPageLocator):
     def click_apply_coupon(self):
         self.selenium.wait_and_click(self.apply_coupon_button)
 
+    def get_displayed_message(self):
+        success_message = self.selenium.wait_and_get_text(self.cart_page_message)
+        return success_message
+
     def apply_coupon(self, coupon_code):
         self.enter_coupon(coupon_code)
         self.click_apply_coupon()
@@ -27,9 +31,10 @@ class CartPage(CartPageLocator):
         assert actual_message == "Coupon code applied successfully.", \
             "Message does not match"
 
-    def get_displayed_message(self):
-        success_message = self.selenium.wait_and_get_text(self.cart_page_message)
-        return success_message
+    def click_checkout_button(self):
+        self.selenium.wait_and_click(self.proceed_to_checkout)
+
+
 
 
 
