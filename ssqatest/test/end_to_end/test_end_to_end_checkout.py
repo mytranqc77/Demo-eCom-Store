@@ -4,6 +4,7 @@ import pytest
 from ssqatest.src.pages.HomePage import HomePage
 from ssqatest.src.pages.Headers import Headers
 from ssqatest.src.pages.CartPage import CartPage
+from ssqatest.src.pages.CheckoutPage import CheckoutPage
 from ssqatest.src.configs.generic_configs import GenericConfigs
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -20,6 +21,7 @@ class TestEndToEndCheckoutGuestUser:
         cart_page = CartPage(self.driver)
         home_page.go_to_home_page()
         home_page.click_first_add_to_cart_button()
+        checkout_page = CheckoutPage(self.driver)
 
         # Check product is added to basket or not
         header.wait_until_cart_item_count(1)
@@ -35,6 +37,13 @@ class TestEndToEndCheckoutGuestUser:
 
         # click check out button
         cart_page.click_checkout_button()
+
+        # Filling in billing info:
+        checkout_page.fill_in_billing_info()
+
+        # Proceed to checkout
+        checkout_page.check_out()
+        import pdb; pdb.set_trace()
 
 
 
